@@ -54,8 +54,8 @@ class CheckMbean  < Sensu::Plugin::Check::CLI
     result = %x[echo "#{commands}" | java -jar #{config[:jmxterm_path]} -v silent -n].to_i
 
     # todo parameterize the comparison
-    critical "#{result} is less than #{config[:critical_value]} msgs / second" if result < config[:critical_value].to_i
-    warning "#{result} is less than #{config[:warning_value]} msgs / second" if result < config[:warning_value].to_i
+    critical "#{result} is less than #{config[:critical_value]}" if result < config[:critical_value].to_i
+    warning "#{result} is less than #{config[:warning_value]}" if result < config[:warning_value].to_i
     ok "#{result} msgs / second"
 
   end
