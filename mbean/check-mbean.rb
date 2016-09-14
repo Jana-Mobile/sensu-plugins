@@ -7,7 +7,7 @@
 # than or greater than a threshold
 #
 # NOTES:
-# Requires a jmxterm installation 
+# Requires a jmxterm installation
 # http://wiki.cyclopsgroup.org/jmxterm/features.html
 #
 
