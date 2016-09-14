@@ -65,7 +65,7 @@ class CheckMbean  < Sensu::Plugin::Check::CLI
 
   def get_mbean_data(host, port, mbean, jmxterm_path)
     commands = "open #{host}:#{port}\nget -s -b #{mbean}\nclose"
-    result = %x[echo "#{commands}" | java -jar #{jmxterm_path} -v silent -n].to_i
+    result = %x[echo "#{commands}" | java -jar #{jmxterm_path} -v silent -n].to_f
 
     return result
   end
