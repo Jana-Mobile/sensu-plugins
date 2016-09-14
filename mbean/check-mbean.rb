@@ -4,10 +4,10 @@
 #
 # DESCRIPTION:
 # Connect to a running JVM via JMX and alert if an mbean's numeric value is less
-# than a threshold
+# than or greater than a threshold
 #
 # NOTES:
-# Requires jmxterm be installed at /opt/jana-lib
+# Requires a jmxterm installation 
 # http://wiki.cyclopsgroup.org/jmxterm/features.html
 #
 
