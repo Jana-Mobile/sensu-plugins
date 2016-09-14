@@ -79,8 +79,8 @@ class CheckMbean  < Sensu::Plugin::Check::CLI
 
     current_value= get_mbean_data(config[:host], config[:port], config[:mbean], config[:jmxterm_path])
 
-    run_check(config[:comparison], config[:critical_value].to_i, current_value, :critical) ||
-        run_check(config[:comparison], config[:critical_value].to_i, current_value, :warn) ||
+    run_check(config[:comparison], config[:critical_value].to_f, current_value, :critical) ||
+        run_check(config[:comparison], config[:critical_value].to_f, current_value, :warn) ||
         ok("result = #{current_value} is ok")
   end
 end
