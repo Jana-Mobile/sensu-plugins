@@ -77,8 +77,6 @@ class CheckMbean  < Sensu::Plugin::Check::CLI
     unknown 'No host or port specified' unless config[:host] and config[:port]
     unknown 'No path to jmxterm jar specifed' unless config[:jmxterm_path]
 
-    puts config[:comparison]
-
     current_value= get_mbean_data(config[:host], config[:port], config[:mbean], config[:jmxterm_path])
 
     run_check(config[:comparison], config[:critical_value].to_i, current_value, :critical) ||
