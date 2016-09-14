@@ -44,19 +44,45 @@ class CheckMbean  < Sensu::Plugin::Check::CLI
          short: '-j PATH',
          long: '--jmxterm PATH'
 
+  option :comparison,
+         description: 'Type of comparison, one of gt or lt ; actual value is LHS, threshold is RHS',
+         short: '-o COMPARISON',
+         long: '--comparison COMPARISON',
+         default: 'lt'
+
+  def run_check(comparison, threshold, current_value, check_type)
+    case comparison
+      when 'gt'
+        if current_value > threshold
+          send(check_type, "#{current_value} is greater than threshold of #{threshold}")
+        end
+      when 'lt'
+        if current_value < threshold
+          send(check_type, "#{current_value} is less than threshold of #{threshold}")
+        end
+    end
+  end
+
+  def get_mbean_data(host, port, mbean, jmxterm_path)
+    commands = "open #{host}:#{port}\nget -s -b #{mbean}\nclose"
+    result = %x[echo "#{commands}" | java -jar #{jmxterm_path} -v silent -n].to_i
+
+    return result
+  end
+
   def run
+    unknown 'Comparison must be lt or gt' unless config[:comparison] and ['lt','gt'].include? config[:comparison]
     unknown 'No mbean path specified' unless config[:mbean]
     unknown 'No warn or critical value specified' unless config[:warning_value] || config[:critical_value]
     unknown 'No host or port specified' unless config[:host] and config[:port]
     unknown 'No path to jmxterm jar specifed' unless config[:jmxterm_path]
 
-    commands = "open #{config[:host]}:#{config[:port]}\nget -s -b #{config[:mbean]}\nclose"
-    result = %x[echo "#{commands}" | java -jar #{config[:jmxterm_path]} -v silent -n].to_i
+    puts config[:comparison]
 
-    # todo parameterize the comparison
-    critical "#{result} is less than #{config[:critical_value]}" if result < config[:critical_value].to_i
-    warning "#{result} is less than #{config[:warning_value]}" if result < config[:warning_value].to_i
-    ok "#{result} msgs / second"
+    current_value= get_mbean_data(config[:host], config[:port], config[:mbean], config[:jmxterm_path])
 
+    run_check(config[:comparison], config[:critical_value].to_i, current_value, :critical) ||
+        run_check(config[:comparison], config[:critical_value].to_i, current_value, :warn) ||
+        ok("result = #{current_value} is ok")
   end
 end
