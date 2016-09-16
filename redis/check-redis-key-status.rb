@@ -64,6 +64,13 @@ class RedisKeyStatus < Sensu::Plugin::Check::CLI
          required: false,
          default: '0'
 
+  option :message,
+         short: '-m MESSAGE',
+         long: '--message MESSAGE',
+         description: 'optional message to send to sensu',
+         required: false
+
+
   def run
     options = { host: config[:host], port: config[:port], db: config[:database] }
     options[:password] = config[:password] if config[:password]
@@ -73,10 +80,12 @@ class RedisKeyStatus < Sensu::Plugin::Check::CLI
     if value == config[:redis_info_value].to_s
       ok "Redis #{config[:redis_info_key]} is OK"
     else
-      if value == '2'
-        message = "#{config[:redis_info_key]} is CRITICAL!"
-      else
+      if config[:message]
+        message = config[:message]
+      elsif value != '2'  # default value for critical
         message = value
+      else
+        message = "#{config[:redis_info_key]} is CRITICAL!"
       end
       critical message
     end
