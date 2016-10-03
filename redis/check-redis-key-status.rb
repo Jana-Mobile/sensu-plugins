@@ -68,7 +68,7 @@ class RedisKeyStatus < Sensu::Plugin::Check::CLI
          short: '-c CRITICAL',
          long: '--critical critical',
          description: 'expected critical value',
-         required: false
+         required: false,
          default: '2'
 
 
