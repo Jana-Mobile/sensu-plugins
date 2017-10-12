@@ -52,12 +52,10 @@ class CheckIndiaProxy < Sensu::Plugin::Check::CLI
          description: 'Specify a uri path'
 
   option :urla,
-         short: '-ua URL',
          long: '--urla URL',
          description: 'First URL to connect to'
 
   option :urlb,
-         short: '-ub URL',
          long: '--urlb URL',
          description: 'Second URL to connect to'
 
@@ -112,7 +110,7 @@ class CheckIndiaProxy < Sensu::Plugin::Check::CLI
     elsif urlb_up and not urla_up
             warning "Bhangra is not responding but India proxy looks ok: " + urla_error_msg + '' + urlb_error_msg
     else
-        ok urla_error_msg + '' + urlb_error_msg
+        ok urla_error_msg + '; ' + urlb_error_msg
     end
   end
 
