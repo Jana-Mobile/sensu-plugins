@@ -4,6 +4,8 @@
 #
 # DESCRIPTION:
 # Alert if the India forward proxy is not working.
+# Gives a warning level alert if the check of urla fails but urlb succeeds.
+# Gives a critical level alert if neither url check succeeds.
 #
 # OUTPUT:
 #   plain text
