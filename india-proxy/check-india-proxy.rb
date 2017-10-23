@@ -128,7 +128,7 @@ class CheckIndiaProxy < Sensu::Plugin::Check::CLI
         urlx_up, urlx_error_msg = acquire_resource
       end
     rescue Timeout::Error
-      urlx_error_msg = '#{config[:host]} request timed out'
+      urlx_error_msg = "#{config[:host]}: request timed out"
     rescue => e
       urlx_error_msg = "#{config[:host]}: Request error: #{e.message}"
     end
