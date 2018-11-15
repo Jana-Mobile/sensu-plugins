@@ -39,7 +39,7 @@ class CheckKafkaConsumers  < Sensu::Plugin::Check::CLI
          long: '--url URL'
 
   def check_consumer(cluster, consumer, http)
-    consumers_url = "#{config[:base_uri]}/v2/kafka/#{cluster}/consumer/#{consumer}/status"
+    consumers_url = "#{config[:base_uri]}/v3/kafka/#{cluster}/consumer/#{consumer}/status"
     req = Net::HTTP::Get.new(consumers_url)
     res = http.request(req)
 
@@ -48,7 +48,7 @@ class CheckKafkaConsumers  < Sensu::Plugin::Check::CLI
   end
 
   def check_cluster(cluster, http)
-    consumers_url = "#{config[:base_uri]}/v2/kafka/#{cluster}/consumer"
+    consumers_url = "#{config[:base_uri]}/v3/kafka/#{cluster}/consumer"
     req = Net::HTTP::Get.new(consumers_url)
     res = http.request(req)
 
@@ -74,7 +74,7 @@ class CheckKafkaConsumers  < Sensu::Plugin::Check::CLI
     config[:ssl] = uri.scheme == 'https'
 
     http = Net::HTTP.new(config[:host], config[:port], nil, nil)
-    clusters_url = "#{config[:base_uri]}/v2/kafka"
+    clusters_url = "#{config[:base_uri]}/v3/kafka"
     req =  Net::HTTP::Get.new(clusters_url)
     res = http.request(req)
 
